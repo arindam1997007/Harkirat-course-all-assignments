@@ -8,5 +8,19 @@ Hint - use Date class exposed in JS
 */
 
 function calculateTime(n) {
-    return 0.01;
+	let sum = 0
+	const t0 = performance.now()
+
+	for (let i = 1; i < n; i++) {
+		sum = sum + i
+	}
+	const t1 = performance.now()
+	const timeDiff = t1 - t0
+
+	console.log(`Sum to do 1-${n} took ${timeDiff} milliseconds.`)
+	return timeDiff
 }
+
+calculateTime(100)
+calculateTime(100000)
+calculateTime(1000000000)

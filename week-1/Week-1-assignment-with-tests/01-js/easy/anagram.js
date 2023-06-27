@@ -8,7 +8,21 @@
 */
 
 function isAnagram(str1, str2) {
-
+	const sortedStr1 = str1
+		.toLowerCase()
+		.replace(/\s/g, "")
+		.split("")
+		.sort()
+		.join("")
+	const sortedStr2 = str2
+		.toLowerCase()
+		.replace(/\s/g, "")
+		.split("")
+		.sort()
+		.join("")
+	console.log(sortedStr1, sortedStr2)
+	if (sortedStr1 === sortedStr2) return true
+	return false
 }
 
-module.exports = isAnagram;
+module.exports = isAnagram
