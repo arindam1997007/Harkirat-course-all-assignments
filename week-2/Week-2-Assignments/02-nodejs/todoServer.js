@@ -39,11 +39,119 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-const express = require('express');
-const bodyParser = require('body-parser');
 
-const app = express();
+/* README
 
-app.use(bodyParser.json());
+	Using a text file to store the information, so as to implement persistence.
+	To pass the tests, please clear the database.txt file before running .
+	Comment out app.listen() while running tests
 
-module.exports = app;
+  */
+const express = require("express")
+const fs = require("fs")
+const bodyParser = require("body-parser")
+
+const path = require("path")
+
+const filePath = path.join(__dirname, "./database.txt")
+
+const app = express()
+
+app.use(bodyParser.json())
+
+const getTodoList = async () => {
+	let todoList = new Map()
+	try {
+		const data = await fs.promises.readFile(filePath, "utf8")
+		const db = JSON.parse(data)
+		todoList = new Map(db)
+	} catch (error) {
+		console.error("Error reading file:", error)
+	} finally {
+		return todoList
+	}
+}
+
+const writeData = async todoList => {
+	const data = JSON.stringify([...todoList])
+	try {
+		await fs.promises.writeFile(filePath, data, "utf8")
+	} catch (error) {
+		console.error("Error writing file:", error)
+	}
+	return
+}
+
+const getLatestTodoItem = todoList => {
+	return Array.from(todoList).at(-1)
+}
+
+const newID = todoList => {
+	const lastItem = getLatestTodoItem(todoList)
+	if (!lastItem) return 1
+	return lastItem[0] + 1
+}
+
+const getTodoArray = todoList => {
+	const todoArray = []
+	todoList.forEach((value, key) => {
+		todoArray.push({ id: key, ...value })
+	})
+	return todoArray
+}
+
+app.get("/todos", async (req, res) => {
+	const todoList = await getTodoList()
+	if (todoList.size) {
+		res.status(200).send(getTodoArray(todoList))
+		return
+	}
+	res.status(404).send("Not Found")
+})
+
+app.get("/todos/:id", async (req, res) => {
+	const todoList = await getTodoList()
+	const id = parseInt(req.params.id)
+	if (todoList.has(id)) {
+		res.status(200).send({ id, ...todoList.get(id) })
+		return
+	}
+	res.status(404).send("Not Found")
+})
+
+app.post("/todos", async (req, res) => {
+	const todoList = await getTodoList()
+	const id = newID(todoList)
+	todoList.set(id, req.body)
+	await writeData(todoList)
+	res.status(201).send({ id })
+})
+
+app.put("/todos/:id", async (req, res) => {
+	const todoList = await getTodoList()
+	const id = parseInt(req.params.id)
+	if (!todoList.has(id)) {
+		res.status(404).send("Not Found")
+		return
+	}
+	todoList.set(id, req.body)
+	await writeData(todoList)
+	res.status(200).send({ id })
+})
+
+app.delete("/todos/:id", async (req, res) => {
+	const todoList = await getTodoList()
+
+	const id = parseInt(req.params.id)
+	if (!todoList.has(id)) {
+		res.status(404).send("Not Found")
+		return
+	}
+	todoList.delete(id, req.body)
+	await writeData(todoList)
+	res.status(200).send({ id })
+})
+
+app.listen(3000)
+
+module.exports = app

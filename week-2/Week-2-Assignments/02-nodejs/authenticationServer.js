@@ -30,8 +30,78 @@
  */
 
 const express = require("express")
-const PORT = 3000;
-const app = express();
+const PORT = 3000
+const app = express()
+
+const bodyParser = require("body-parser")
+
+app.use(bodyParser.json())
+
+const userList = []
+
+const findUser = ({ email, password }) => {
+	const user = userList.find(user => {
+		if (user.email === email && user.password === password) return true
+		return false
+	})
+	return user
+}
+
+app.post("/signup", (req, res) => {
+	// console.log({ req })
+	const { email, password, firstName, lastName } = req.body
+	if (userList.length === 0) {
+		userList.push({ email, password, firstName, lastName, id: 1 })
+	} else {
+		const index = userList.findIndex(user => user.email === email)
+		if (index !== -1) {
+			res.status(400).send("Username already exists")
+			return
+		}
+		const id = userList.at(-1).id + 1
+		userList.push({ email, password, firstName, lastName, id })
+	}
+	res.status(201).send("Signup successful")
+})
+
+app.post("/login", (req, res) => {
+	const { email, password } = req.body
+	const user = findUser({ email, password })
+	if (!user) {
+		res.status(401).send("Unauthorized")
+		return
+	}
+	require("crypto").randomBytes(48, function (err, buffer) {
+		const token = buffer.toString("hex")
+		res.status(200).send({
+			token,
+			email: user.email,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			id: user.id,
+		})
+	})
+})
+
+app.get("/data", (req, res) => {
+	const { email, password } = req.headers
+	if (!email || !password) {
+		res.status(401).send("Unauthorized")
+		return
+	}
+	const user = findUser({ email, password })
+	if (!user) {
+		res.status(401).send("Unauthorized")
+		return
+	}
+	const allUsers = userList.map(({ firstName, lastName, id }) => {
+		return { firstName, lastName, id }
+	})
+	res.status(200).send({ users: allUsers })
+})
+
+// app.listen(3000)
+
 // write your logic here, DONT WRITE app.listen(3000) when you're running tests, the tests will automatically start the server
 
-module.exports = app;
+module.exports = app
