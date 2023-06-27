@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Week 3</title>
+		<link rel="stylesheet" href="./style.css" />
+		<link rel="shortcut icon" href="#" />
+	</head>
+	<body>
+		<main>
+			<form id="todo-form">
+				<label for="item">Item:</label>
+				<input type="text" id="item" name="item" required />
+
+				<label for="description">Description:</label>
+				<textarea
+					id="description"
+					name="description"
+					rows="4"
+					cols="50"
+					required
+				></textarea>
+
+				<input type="submit" value="Submit" />
+			</form>
+			<div id="todo-list"></div>
+		</main>
+		<script defer src="index.js"></script>
+	</body>
+</html>
