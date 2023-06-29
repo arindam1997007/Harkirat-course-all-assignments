@@ -1,0 +1,50 @@
+###
+POST http://localhost:3000/admin/signup
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "pass"
+}
+
+###
+POST http://localhost:3000/admin/login
+Content-Type: application/xml
+username: admin
+password: pass
+
+###
+POST http://localhost:3000/admin/courses
+Content-Type: application/json
+username: admin
+password: pass
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjg3OTU4OTMzfQ.nzVAJaCkMEcfaSmDdQz7D-zcl_9RxuLibKXbtSVIQ5c
+
+{
+    "title":"React Pro",
+    "description":"A course to become the best in React",
+    "price":20,
+    "published":true,
+    "imageLink":"https://picsum.photos/id/23/300/300"    
+}
+
+###
+PUT http://localhost:3000/admin/courses/1
+Content-Type: application/json
+username: admin
+password: pass
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjg3OTU4OTMzfQ.nzVAJaCkMEcfaSmDdQz7D-zcl_9RxuLibKXbtSVIQ5c
+
+{
+    "title":"React Pro",
+    "description":"A course to become the best in React",
+    "price":2000,
+    "published":true,
+    "imageLink":"https://picsum.photos/id/23/300/300"    
+}
+
+###
+GET http://localhost:3000/admin/courses
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjg3OTU4OTMzfQ.nzVAJaCkMEcfaSmDdQz7D-zcl_9RxuLibKXbtSVIQ5c
+
+
