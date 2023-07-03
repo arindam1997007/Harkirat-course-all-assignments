@@ -1,54 +1,53 @@
-const express = require('express');
-const app = express();
+require("dotenv").config()
+const express = require("express")
+const app = express()
+const jwt = require("jsonwebtoken")
+const cors = require("cors")
+const mongoose = require("mongoose")
 
-app.use(express.json());
+mongoose.connect(process.env.DATABASE_URL)
+const db = mongoose.connection
 
-let ADMINS = [];
-let USERS = [];
-let COURSES = [];
+db.on("error", err => console.error(err))
+db.once("open", () => console.log("Database connected"))
 
-// Admin routes
-app.post('/admin/signup', (req, res) => {
-  // logic to sign up admin
-});
+const authenticateToken = (req, res, next) => {
+	const authHeader = req.headers["authorization"]
+	const token = authHeader?.split(" ")?.[1]
+	if (!token) return res.status(400).json({ message: "No Token" })
 
-app.post('/admin/login', (req, res) => {
-  // logic to log in admin
-});
+	jwt.verify(token, process.env.ACCESS_SECRET_KEY, (err, user) => {
+		if (err) return res.status(403).json({ message: "Unauthorized" })
+		req.user = user
+		next()
+	})
+}
 
-app.post('/admin/courses', (req, res) => {
-  // logic to create a course
-});
+const jwtMiddleware = (req, res, next) => {
+	const protectedRoutes = [
+		"/admin/courses",
+		"/users/courses",
+		"/users/purchasedCourses",
+	]
+	if (protectedRoutes.some(route => req.url.startsWith(route))) {
+		authenticateToken(req, res, next)
+	} else {
+		next()
+	}
+}
 
-app.put('/admin/courses/:courseId', (req, res) => {
-  // logic to edit a course
-});
+app.use([express.json(), cors(), jwtMiddleware])
 
-app.get('/admin/courses', (req, res) => {
-  // logic to get all courses
-});
+let ADMINS = []
+let USERS = []
+let COURSES = []
 
-// User routes
-app.post('/users/signup', (req, res) => {
-  // logic to sign up user
-});
+const adminRouter = require("./routes/admin")
+app.use("/admin", adminRouter)
 
-app.post('/users/login', (req, res) => {
-  // logic to log in user
-});
-
-app.get('/users/courses', (req, res) => {
-  // logic to list all courses
-});
-
-app.post('/users/courses/:courseId', (req, res) => {
-  // logic to purchase a course
-});
-
-app.get('/users/purchasedCourses', (req, res) => {
-  // logic to view purchased courses
-});
+const userRouter = require("./routes/users")
+app.use("/users", userRouter)
 
 app.listen(3000, () => {
-  console.log('Server is listening on port 3000');
-});
+	console.log("Server is listening on port 3000")
+})

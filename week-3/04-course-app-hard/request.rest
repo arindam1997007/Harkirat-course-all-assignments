@@ -1,0 +1,78 @@
+###
+POST http://localhost:3000/admin/signup
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "pass"
+}
+
+###
+POST http://localhost:3000/admin/login
+Content-Type: application/xml
+username: admin
+password: pass
+
+###
+POST http://localhost:3000/admin/courses
+Content-Type: application/json
+username: admin
+password: pass
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjg4MzA2OTgyfQ.6S0hTQ2JiYziLyNVUsxVbqvi5xw3PcfSwfV8klibdxY
+
+{
+    "title":"Next Pro",
+    "description":"A course to become the best in Next JS",
+    "price":2005,
+    "published":true,
+    "imageLink":"https://picsum.photos/id/23/300/300"    
+}
+
+###
+PUT http://localhost:3000/admin/courses/64a188cbe05d74df361caa88
+Content-Type: application/json
+username: admin
+password: pass
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjg4MzA2OTgyfQ.6S0hTQ2JiYziLyNVUsxVbqvi5xw3PcfSwfV8klibdxY
+
+{
+    "title":"React Pro",
+    "description":"A course to become the best in React",
+    "price":1800,
+    "published":true,
+    "imageLink":"https://picsum.photos/id/23/300/300"    
+}
+
+###
+GET http://localhost:3000/admin/courses
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjg4MzA2OTgyfQ.6S0hTQ2JiYziLyNVUsxVbqvi5xw3PcfSwfV8klibdxY
+
+
+###
+POST http://localhost:3000/users/signup
+Content-Type: application/json
+
+{
+    "username": "user23",
+    "password": "pass"
+}
+
+###
+POST http://localhost:3000/users/login
+Content-Type: application/xml
+username: user
+password: pass
+
+
+###
+GET http://localhost:3000/users/courses
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpYXQiOjE2ODgzMTM1NzN9.-ddsyfHMaFoECtNcvm3KA0o1u0C3qidLo04d7PcIOUA
+
+
+###
+POST http://localhost:3000/users/courses/64a190ab749a950716f46b91
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpYXQiOjE2ODgzMTM1NzN9.-ddsyfHMaFoECtNcvm3KA0o1u0C3qidLo04d7PcIOUA
+
+###
+GET http://localhost:3000/users/purchasedCourses
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpYXQiOjE2ODgzMTM1NzN9.-ddsyfHMaFoECtNcvm3KA0o1u0C3qidLo04d7PcIOUA
