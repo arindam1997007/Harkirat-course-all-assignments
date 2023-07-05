@@ -38,10 +38,6 @@ const jwtMiddleware = (req, res, next) => {
 
 app.use([express.json(), cors(), jwtMiddleware])
 
-let ADMINS = []
-let USERS = []
-let COURSES = []
-
 const adminRouter = require("./routes/admin")
 app.use("/admin", adminRouter)
 

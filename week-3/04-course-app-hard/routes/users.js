@@ -62,7 +62,7 @@ router.post("/login", async (req, res) => {
 
 router.get("/courses", async (req, res) => {
 	// logic to list all courses
-	const course = await Course.find()
+	const course = await Course.find({ published: true })
 	res.status(200).json(course)
 })
 
@@ -73,16 +73,12 @@ router.post("/courses/:courseId", async (req, res) => {
 
 	try {
 		const course = await Course.findOne({ _id: courseId })
+		const user = await User.findOne({ username })
 
-		if (!course) return res.status(400).json({ message: "Course not found" })
+		if (!course) return res.status(404).json({ message: "Course not found" })
+		if (!user) return res.status(403).json({ message: "User not found" })
 
-		await User.findOneAndUpdate(
-			{ username },
-			{
-				$push: { purchasedCourses: course },
-			},
-			{ returnDocument: "after" }
-		)
+		user.purchasedCourses.push(course)
 
 		res
 			.status(200)
