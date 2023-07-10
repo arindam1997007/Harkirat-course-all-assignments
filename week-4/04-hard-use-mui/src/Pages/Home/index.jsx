@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material"
+import { Grid, Typography, Box } from "@mui/material"
 import { useState } from "react"
 import { SignIn } from "../../Components/SignIn"
 import { SignUp } from "../../Components/SignUp"
@@ -6,15 +6,6 @@ import BackgroundImage from "../../Assets/Images/home-page-background.jpg"
 
 export const Home = () => {
 	const [toggleSignIn, setToggleSignIn] = useState(true)
-
-	const handleSubmit = event => {
-		event.preventDefault()
-		const data = new FormData(event.currentTarget)
-		console.log({
-			email: data.get("email"),
-			password: data.get("password"),
-		})
-	}
 
 	const toggleSignUp = () => {
 		setToggleSignIn(!toggleSignIn)
@@ -28,7 +19,7 @@ export const Home = () => {
 				sm={4}
 				md={7}
 				sx={{
-					backgroundImage: `url(${BackgroundImage})`,
+					backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/src/Assets/Images/home-page-background.jpg), url(${BackgroundImage})`,
 					backgroundRepeat: "no-repeat",
 					backgroundColor: t =>
 						t.palette.mode === "light"
@@ -37,9 +28,20 @@ export const Home = () => {
 					backgroundSize: "cover",
 					backgroundPosition: "center",
 				}}
-			/>
+			>
+				<Box
+					display='flex'
+					justifyContent='center'
+					alignItems='center'
+					minHeight='100vh'
+				>
+					<Typography component='h1' variant='h1' sx={{ fontWeight: 600 }}>
+						Welcome To Course Academy
+					</Typography>
+				</Box>
+			</Grid>
 			{toggleSignIn ? (
-				<SignIn handleSubmit={handleSubmit} toggleSignUp={toggleSignUp} />
+				<SignIn toggleSignUp={toggleSignUp} />
 			) : (
 				<SignUp toggleSignUp={toggleSignUp} />
 			)}
