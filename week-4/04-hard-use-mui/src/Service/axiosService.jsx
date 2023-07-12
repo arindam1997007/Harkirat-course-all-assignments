@@ -7,8 +7,7 @@ export const axiosService = axios.create({
 axiosService.interceptors.request.use(
 	function (config) {
 		if (localStorage.getItem("authToken")) {
-			config.headers.Authorization =
-				"Bearer " + localStorage.getItem("authToken")
+			config.headers.Authorization = localStorage.getItem("authToken")
 		}
 
 		return config
