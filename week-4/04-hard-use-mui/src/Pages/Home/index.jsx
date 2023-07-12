@@ -1,7 +1,7 @@
 import { Grid, Typography, Box } from "@mui/material"
 import { useState } from "react"
 import { SignIn } from "../../Components/SignIn"
-import { SignUp } from "../../Components/SignUp"
+import { UserSignUp } from "../../Components/SignUp/userSignUp"
 import BackgroundImage from "../../Assets/Images/home-page-background.jpg"
 
 export const Home = () => {
@@ -43,7 +43,7 @@ export const Home = () => {
 			{toggleSignIn ? (
 				<SignIn toggleSignUp={toggleSignUp} />
 			) : (
-				<SignUp toggleSignUp={toggleSignUp} />
+				<UserSignUp toggleSignUp={toggleSignUp} />
 			)}
 		</Grid>
 	)

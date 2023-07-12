@@ -12,8 +12,10 @@ import {
 import PropTypes from "prop-types"
 import { useState } from "react"
 import { adminSignIn, userSignIn } from "../../Service/auth.service"
+import { useNavigate } from "react-router-dom"
 
 export const SignIn = ({ toggleSignUp }) => {
+	const navigate = useNavigate()
 	const [errorMsg, setErrorMsg] = useState("")
 
 	const handleSignIn = async event => {
@@ -28,6 +30,7 @@ export const SignIn = ({ toggleSignUp }) => {
 			try {
 				const res = await adminSignIn({ username, password })
 				console.log({ res })
+				navigate("/admin")
 			} catch (error) {
 				setErrorMsg(error.message)
 			}
