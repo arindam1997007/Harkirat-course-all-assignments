@@ -7,10 +7,41 @@ import TableCell from "@mui/material/TableCell"
 import TableContainer from "@mui/material/TableContainer"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
-import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
+import {
+	Check as CheckIcon,
+	Close as CloseIcon,
+	MenuBook as MenuBookIcon,
+} from "@mui/icons-material"
+import { Box } from "@mui/material"
+import { useNavigate } from "react-router-dom"
 
 const columns = [
-	{ id: "id", label: "ID", minWidth: 170 },
+	{ id: "id", label: "ID", minWidth: 50 },
+	{
+		id: "imageLink",
+		label: "",
+		minWidth: 50,
+		format: value =>
+			value ? (
+				<Box
+					component='img'
+					src={value}
+					onError={({ currentTarget }) => {
+						currentTarget.onerror = null // prevents looping
+						currentTarget.src = <MenuBookIcon />
+					}}
+					alt='course image'
+					loading='lazy'
+					sx={{
+						height: 50,
+						width: 50,
+						objectFit: "cover",
+					}}
+				/>
+			) : (
+				<MenuBookIcon />
+			),
+	},
 	{ id: "title", label: "Title", minWidth: 170 },
 	{ id: "description", label: "Description", minWidth: 100 },
 	{
@@ -19,11 +50,7 @@ const columns = [
 		minWidth: 170,
 		format: value => "₹ " + value,
 	},
-	{
-		id: "image",
-		label: "Image",
-		minWidth: 170,
-	},
+
 	{
 		id: "published",
 		label: "Published",
@@ -33,6 +60,8 @@ const columns = [
 ]
 
 export const Courses = () => {
+	const navigate = useNavigate()
+
 	const [courses, setCourses] = useState([])
 	useEffect(() => {
 		const retrieveCourses = async () => {
@@ -43,8 +72,8 @@ export const Courses = () => {
 	}, [])
 
 	return (
-		<Paper sx={{ width: "100%", overflow: "hidden" }}>
-			<TableContainer sx={{ maxHeight: 440 }}>
+		<Paper sx={{ width: "100%" }}>
+			<TableContainer>
 				<Table stickyHeader aria-label='sticky table'>
 					<TableHead>
 						<TableRow>
@@ -53,6 +82,7 @@ export const Courses = () => {
 									key={column.id}
 									align={column.align}
 									style={{ minWidth: column.minWidth }}
+									sx={{ fontWeight: 600, fontSize: "1.25rem" }}
 								>
 									{column.label}
 								</TableCell>
@@ -68,6 +98,9 @@ export const Courses = () => {
 									tabIndex={-1}
 									key={row._id}
 									sx={{ cursor: "pointer" }}
+									onClick={() => {
+										navigate(`/course/${row._id}`)
+									}}
 								>
 									{columns.map(column => {
 										if (column.id === "id")
