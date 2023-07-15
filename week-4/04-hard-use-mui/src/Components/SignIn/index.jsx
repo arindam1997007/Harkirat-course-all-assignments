@@ -26,22 +26,17 @@ export const SignIn = ({ toggleSignUp }) => {
 		const isAdmin = data.get("isAdmin")
 		setErrorMsg("")
 
-		if (isAdmin === "on") {
-			try {
-				const res = await adminSignIn({ username, password })
-				console.log({ res })
+		try {
+			let response
+			if (isAdmin === "on") {
+				response = await adminSignIn({ username, password })
+				localStorage.setItem("authToken", "Bearer " + response.data.accessToken)
 				navigate("/admin")
-			} catch (error) {
-				setErrorMsg(error.message)
+			} else {
+				response = await userSignIn({ username, password }).res.data
 			}
-		} else {
-			userSignIn
-			try {
-				const res = await userSignIn({ username, password })
-				console.log({ res })
-			} catch (error) {
-				setErrorMsg(error.message)
-			}
+		} catch (error) {
+			setErrorMsg(error.message)
 		}
 	}
 

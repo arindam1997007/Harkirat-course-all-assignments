@@ -9,7 +9,6 @@ import {
 	Typography,
 	Divider,
 	IconButton,
-	ListItemButton,
 	ListItemIcon,
 	ListItemText,
 } from "@mui/material"
@@ -17,6 +16,8 @@ import { styled } from "@mui/material/styles"
 import MenuIcon from "@mui/icons-material/Menu"
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
 import PropTypes from "prop-types"
+import LogoutIcon from "@mui/icons-material/Logout"
+import { useLogout } from "../../Hooks/useLogout"
 
 const drawerWidth = 240
 
@@ -86,6 +87,7 @@ const Drawer = styled(MuiDrawer, {
 }))
 
 export function Sidebar({ sidebarOptions, selected, setSelected, children }) {
+	const { logout } = useLogout()
 	const [open, setOpen] = useState(true)
 
 	const handleDrawerOpen = () => {
@@ -128,33 +130,51 @@ export function Sidebar({ sidebarOptions, selected, setSelected, children }) {
 					{sidebarOptions.map(item => (
 						<MenuItem
 							key={item.name}
-							sx={{ display: "block" }}
+							sx={{
+								display: "flex",
+								height: 72,
+								justifyContent: open ? "initial" : "center",
+								px: 2.5,
+							}}
 							selected={selected.id === item.id}
 							onClick={() => setSelected(item)}
 						>
-							<ListItemButton
+							<ListItemIcon
 								sx={{
-									minHeight: 48,
-									justifyContent: open ? "initial" : "center",
-									px: 2.5,
+									minWidth: 0,
+									mr: open ? 3 : "auto",
+									justifyContent: "center",
 								}}
 							>
-								<ListItemIcon
-									sx={{
-										minWidth: 0,
-										mr: open ? 3 : "auto",
-										justifyContent: "center",
-									}}
-								>
-									{item.icon}
-								</ListItemIcon>
-								<ListItemText
-									primary={item.name}
-									sx={{ opacity: open ? 1 : 0 }}
-								/>
-							</ListItemButton>
+								{item.icon}
+							</ListItemIcon>
+							<ListItemText
+								primary={item.name}
+								sx={{ opacity: open ? 1 : 0 }}
+							/>
 						</MenuItem>
 					))}
+					<Divider />
+					<MenuItem
+						sx={{
+							display: "flex",
+							height: 72,
+							justifyContent: open ? "initial" : "center",
+							px: 2.5,
+						}}
+						onClick={logout}
+					>
+						<ListItemIcon
+							sx={{
+								minWidth: 0,
+								mr: open ? 3 : "auto",
+								justifyContent: "center",
+							}}
+						>
+							<LogoutIcon />
+						</ListItemIcon>
+						<ListItemText primary={"Logout"} sx={{ opacity: open ? 1 : 0 }} />
+					</MenuItem>
 				</List>
 			</Drawer>
 			<Box component='main' sx={{ flexGrow: 1, p: 3 }}>
