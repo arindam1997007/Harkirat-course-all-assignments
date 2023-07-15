@@ -6,6 +6,8 @@ import {
 	LocalLibrary as LocalLibraryIcon,
 } from "@mui/icons-material"
 import { AdminSignUp } from "../../Components/SignUp/adminSignUp"
+import { Courses } from "../../Components/Courses"
+import { AddCourse } from "../../Components/AddCourse"
 
 const sidebarOptions = [
 	{ id: 1, name: "Create Admin", icon: <AdminPanelSettingsIcon /> },
@@ -15,6 +17,20 @@ const sidebarOptions = [
 
 export const Admin = () => {
 	const [selectedOption, setSelectedOption] = useState(sidebarOptions[2])
+
+	const renderChild = () => {
+		switch (selectedOption.id) {
+			case 1:
+				return <AdminSignUp />
+			case 2:
+				return <AddCourse />
+			case 3:
+				return <Courses />
+			default:
+				break
+		}
+	}
+
 	return (
 		<>
 			<Sidebar
@@ -22,7 +38,7 @@ export const Admin = () => {
 				selected={selectedOption}
 				setSelected={setSelectedOption}
 			>
-				<AdminSignUp />
+				{renderChild()}
 			</Sidebar>
 		</>
 	)
