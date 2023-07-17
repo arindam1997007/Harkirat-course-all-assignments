@@ -122,7 +122,7 @@ export function Sidebar({ children, sidebarOptions }) {
 						<MenuIcon />
 					</IconButton>
 					<Typography variant='h6' noWrap component='div'>
-						{selected.name}
+						{selected?.name}
 					</Typography>
 				</Toolbar>
 			</AppBar>
@@ -143,7 +143,7 @@ export function Sidebar({ children, sidebarOptions }) {
 								justifyContent: open ? "initial" : "center",
 								px: 2.5,
 							}}
-							selected={selected.id === item.id}
+							selected={selected?.id === item.id}
 							onClick={() => navigate(item.url)}
 						>
 							<ListItemIcon

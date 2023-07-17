@@ -38,3 +38,30 @@ export const createCourse = async ({
 			return Promise.reject(err.response.data)
 		})
 }
+
+export const editCourse = async ({
+	title,
+	description,
+	price,
+	imageLink,
+	published,
+	courseId,
+}) => {
+	return axiosService({
+		method: "put",
+		url: `admin/courses/${courseId}`,
+		data: {
+			title,
+			description,
+			price,
+			imageLink,
+			published,
+		},
+	})
+		.then(res => {
+			return res
+		})
+		.catch(err => {
+			return Promise.reject(err.response.data)
+		})
+}

@@ -16,6 +16,8 @@ import {
 } from "@mui/icons-material"
 import { Alert, Box } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import { useSetRecoilState } from "recoil"
+import { editCourse } from "../../Atom/course.atom"
 
 const columns = [
 	{ id: "id", label: "ID", minWidth: 50 },
@@ -64,6 +66,7 @@ const columns = [
 export const Courses = () => {
 	const navigate = useNavigate()
 	const [error, setError] = useState({ open: false })
+	const setEditCourse = useSetRecoilState(editCourse)
 
 	const [courses, setCourses] = useState([])
 	useEffect(() => {
@@ -123,7 +126,8 @@ export const Courses = () => {
 										key={row._id}
 										sx={{ cursor: "pointer" }}
 										onClick={() => {
-											navigate(`/course/${row._id}`)
+											setEditCourse(row)
+											navigate(`/admin/course/${row._id}`)
 										}}
 									>
 										{columns.map(column => {
