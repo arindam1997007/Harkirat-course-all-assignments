@@ -13,6 +13,7 @@ import {
 	ListItemText,
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
+import { useLocation, useNavigate } from "react-router-dom"
 import MenuIcon from "@mui/icons-material/Menu"
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
 import PropTypes from "prop-types"
@@ -86,9 +87,11 @@ const Drawer = styled(MuiDrawer, {
 	}),
 }))
 
-export function Sidebar({ sidebarOptions, selected, setSelected, children }) {
+export function Sidebar({ children, sidebarOptions }) {
 	const { logout } = useLogout()
+	const navigate = useNavigate()
 	const [open, setOpen] = useState(true)
+	const location = useLocation()
 
 	const handleDrawerOpen = () => {
 		setOpen(true)
@@ -97,6 +100,10 @@ export function Sidebar({ sidebarOptions, selected, setSelected, children }) {
 	const handleDrawerClose = () => {
 		setOpen(false)
 	}
+
+	const selected = sidebarOptions.find(option => {
+		return option.url === location.pathname
+	})
 
 	return (
 		<Box sx={{ display: "flex" }}>
@@ -137,7 +144,7 @@ export function Sidebar({ sidebarOptions, selected, setSelected, children }) {
 								px: 2.5,
 							}}
 							selected={selected.id === item.id}
-							onClick={() => setSelected(item)}
+							onClick={() => navigate(item.url)}
 						>
 							<ListItemIcon
 								sx={{
@@ -186,8 +193,6 @@ export function Sidebar({ sidebarOptions, selected, setSelected, children }) {
 }
 
 Sidebar.propTypes = {
-	sidebarOptions: PropTypes.array,
-	selected: PropTypes.object,
-	setSelected: PropTypes.func,
+	sidebarOptions: PropTypes.array.isRequired,
 	children: PropTypes.node,
 }

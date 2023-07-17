@@ -1,45 +1,36 @@
-import { Sidebar } from "../../Components/Sidebar"
-import { useState } from "react"
+import { Outlet } from "react-router-dom"
 import {
 	AdminPanelSettings as AdminPanelSettingsIcon,
 	BookmarkAdd as BookmarkAddIcon,
 	LocalLibrary as LocalLibraryIcon,
 } from "@mui/icons-material"
-import { AdminSignUp } from "../../Components/SignUp/adminSignUp"
-import { Courses } from "../../Components/Courses"
-import { AddCourse } from "../../Components/AddCourse"
+import { Sidebar } from "../../Components/Sidebar"
 
 const sidebarOptions = [
-	{ id: 1, name: "Create Admin", icon: <AdminPanelSettingsIcon /> },
-	{ id: 2, name: "Add Course", icon: <BookmarkAddIcon /> },
-	{ id: 3, name: "All Courses", icon: <LocalLibraryIcon /> },
+	{
+		id: 1,
+		name: "Create Admin",
+		icon: <AdminPanelSettingsIcon />,
+		url: "/admin",
+	},
+	{
+		id: 2,
+		name: "Add Course",
+		icon: <BookmarkAddIcon />,
+		url: "/admin/add-course",
+	},
+	{
+		id: 3,
+		name: "All Courses",
+		icon: <LocalLibraryIcon />,
+		url: "/admin/course",
+	},
 ]
 
-export const Admin = () => {
-	const [selectedOption, setSelectedOption] = useState(sidebarOptions[2])
-
-	const renderChild = () => {
-		switch (selectedOption.id) {
-			case 1:
-				return <AdminSignUp />
-			case 2:
-				return <AddCourse />
-			case 3:
-				return <Courses />
-			default:
-				break
-		}
-	}
-
+export function Admin() {
 	return (
-		<>
-			<Sidebar
-				sidebarOptions={sidebarOptions}
-				selected={selectedOption}
-				setSelected={setSelectedOption}
-			>
-				{renderChild()}
-			</Sidebar>
-		</>
+		<Sidebar sidebarOptions={sidebarOptions}>
+			<Outlet />
+		</Sidebar>
 	)
 }
